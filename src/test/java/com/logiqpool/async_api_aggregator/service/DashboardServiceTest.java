@@ -1,5 +1,8 @@
 package com.logiqpool.async_api_aggregator.service;
 
+import com.logiqpool.async_api_aggregator.client.NewsClient;
+import com.logiqpool.async_api_aggregator.client.StockClient;
+import com.logiqpool.async_api_aggregator.client.WeatherClient;
 import com.logiqpool.async_api_aggregator.dto.DashboardResponse;
 import com.logiqpool.async_api_aggregator.dto.NewsResponse;
 import com.logiqpool.async_api_aggregator.dto.StockResponse;
@@ -39,9 +42,9 @@ class DashboardServiceTest {
         NewsResponse news = new NewsResponse();
         StockResponse stock = new StockResponse();
 
-        when(WeatherClient.getWeather()).thenReturn(weather);
-        when(NewsClient.getNews()).thenReturn(news);
-        when(StockClient.getStock()).thenReturn(stock);
+        when(weatherClient.getWeather()).thenReturn(weather);
+        when(newsClient.getNews()).thenReturn(news);
+        when(stockClient.getStock()).thenReturn(stock);
 
         //Act
         DashboardResponse response = dashboardService.getDashboardResponse();
@@ -49,9 +52,9 @@ class DashboardServiceTest {
         //Assert
         assertNotNull(response);
         assertEquals(response.getWeather().getCity(),"Sheffield");
-        verify(WeatherClient);
-        verify(NewsClient);
-        verify(StockClient);
+        verify(weatherClient).getWeather();
+        verify(newsClient).getNews();
+        verify(stockClient).getStock();
     }
 
 }
