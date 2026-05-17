@@ -12,9 +12,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -57,7 +54,7 @@ class DashboardServiceTest {
         verify(stockClient).getStock();
     }
     @Test
-    void shouldFetchDataAsynchronously() {
+    public void shouldFetchDataAsynchronously() {
 
         //Arrange
         WeatherResponse weather =new WeatherResponse();
