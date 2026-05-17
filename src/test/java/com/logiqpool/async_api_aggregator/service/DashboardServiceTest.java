@@ -12,11 +12,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class DashboardServiceTest {
@@ -55,6 +52,44 @@ class DashboardServiceTest {
         verify(weatherClient).getWeather();
         verify(newsClient).getNews();
         verify(stockClient).getStock();
+    }
+    @Test
+    public void shouldFetchDataAsynchronously() {
+
+        //Arrange
+        WeatherResponse weather =new WeatherResponse();
+        weather.setCity("Sheffield");
+
+        NewsResponse news = new NewsResponse();
+        StockResponse stock = new StockResponse();
+
+        //Mock
+        when(weatherClient.getWeather())
+                .thenAnswer(invocation -> {
+                    Thread.sleep(1000);
+                    return weather;
+                });
+
+        when(newsClient.getNews())
+                .thenAnswer(invocation -> {
+                    Thread.sleep(1000);
+                    return news;
+                });
+
+        when(stockClient.getStock())
+                .thenAnswer(invocation -> {
+                    Thread.sleep(1000);
+                    return stock;
+                });
+
+        //Act
+        long start = System.currentTimeMillis();
+        DashboardResponse response = dashboardService.getDashboardResponse();
+        long end = System.currentTimeMillis();
+        //Assert
+        long duration = end - start;
+        System.out.println(duration);
+        assertTrue(duration < 2500);
     }
 
 }
